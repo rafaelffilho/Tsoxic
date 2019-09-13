@@ -77,3 +77,9 @@ void MainWindow::on_bt_cut_clicked()
 {
     ui->te_code_area->cut();
 }
+
+void MainWindow::on_bt_team_clicked()
+{
+    teamDialog = new TeamDialog();
+    teamDialog->show();
+}

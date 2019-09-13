@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QFile>
+#include "teamdialog.h"
 
 namespace Ui {
 class MainWindow;
@@ -29,9 +30,12 @@ private slots:
 
     void on_bt_cut_clicked();
 
+    void on_bt_team_clicked();
+
 private:
     QFile *file = nullptr;
     Ui::MainWindow *ui;
+    TeamDialog *teamDialog;
 };
 
 #endif // MAINWINDOW_H
