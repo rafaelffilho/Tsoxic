@@ -23,6 +23,12 @@ private slots:
 
     void on_bt_save_clicked();
 
+    void on_bt_copy_clicked();
+
+    void on_bt_paste_clicked();
+
+    void on_bt_cut_clicked();
+
 private:
     QFile *file = nullptr;
     Ui::MainWindow *ui;

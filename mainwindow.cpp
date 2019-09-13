@@ -9,6 +9,7 @@
 #include <QInputDialog>
 #include <QIODevice>
 #include <QTextStream>
+#include <QShortcut>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -56,4 +57,19 @@ void MainWindow::on_bt_save_clicked()
 
     QTextStream out(file);
     out << ui->te_code_area->toPlainText();
+}
+
+void MainWindow::on_bt_copy_clicked()
+{
+    ui->te_code_area->copy();
+}
+
+void MainWindow::on_bt_paste_clicked()
+{
+    ui->te_code_area->paste();
+}
+
+void MainWindow::on_bt_cut_clicked()
+{
+    ui->te_code_area->cut();
 }
