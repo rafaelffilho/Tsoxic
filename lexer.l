@@ -1,6 +1,8 @@
 %{
 	#include <stdio.h>
+	#include "common.h"
 	int line_num = 1;
+	extern int yyline;
 %}
 
 upper  [A-Z]
@@ -25,16 +27,16 @@ invalid_block_comment \/\*([^(\*\/)]*\n*)*
 
 %%
 
-{symbols} { printf("found symbols (%s) in line %d\n", yytext, line_num); }
-{keyword_list} { printf("found keyword (%s) in line %d\n", yytext, line_num); }
-{id_int} { printf("found id_int (%s) in line %d\n", yytext, line_num); }
-{id_float} { printf("found id_float (%s) in line %d\n", yytext, line_num); }
-{id_string} { printf("found id_string (%s) in line %d\n", yytext, line_num); }
-{id_bool} { printf("found id_bool (%s) in line %d\n", yytext, line_num); }
-{id_comp} { printf("found id_comp (%s) in line %d\n", yytext, line_num); }
-{c_int} { printf("found c_int (%s) in line %d\n", yytext, line_num); }
-{c_float} { printf("found c_float (%s) in line %d\n", yytext, line_num); }
-{c_string} { printf("found c_string (%s) in line %d\n", yytext, line_num); }
+{symbols} { yyline = line_num; return SYMBOL;}
+{keyword_list} { yyline = line_num; return KEYWORD;}
+{id_int} { yyline = line_num; return ID_INT;}
+{id_float} { yyline = line_num; return ID_FLOAT;}
+{id_string} { yyline = line_num; return ID_STR;}
+{id_bool} { yyline = line_num; return ID_BOOL;}
+{id_comp} { yyline = line_num; return ID_COMP;}
+{c_int} { yyline = line_num; return C_INT;}
+{c_float} { yyline = line_num; return C_FLOAT;}
+{c_string} { yyline = line_num; return C_STR;}
 {line_comment} { /* do nothing */ }
 {block_comment} { 
 	int i = 0;
@@ -45,14 +47,16 @@ invalid_block_comment \/\*([^(\*\/)]*\n*)*
 {spaces} { /* do nothing */ }
 
 \n {line_num++;}
-(I|F|S|B|C) { printf("ERROR line %d - Invalid id %s_\n", line_num, yytext); return -1; }
-\" { printf("ERROR line %d - Invalid string\n", line_num); return -1; }
-{invalid_block_comment} { printf("ERROR line %d - Invalid block comment\n", line_num); return -1; }
-. { printf("ERROR: unrecognized (%s) line %d\n", yytext, line_num); return -1; }
+(I|F|S|B|C) { yyline = line_num; return ERR_ID; }
+\" { yyline = line_num; return ERR_STR; }
+{invalid_block_comment} { yyline = line_num; return ERR_BLK; }
+. { yyline = line_num; return ERR_UNK; }
 
 %%
-int yywrap () {}
+int yywrap () { }
 
 int parse () {
 	yylex();
+
+	return 0;
 }

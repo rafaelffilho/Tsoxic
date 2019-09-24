@@ -32,6 +32,8 @@ private slots:
 
     void on_bt_team_clicked();
 
+    void on_bt_compile_clicked();
+
 private:
     QFile *file = nullptr;
     Ui::MainWindow *ui;

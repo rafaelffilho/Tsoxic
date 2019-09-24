@@ -27,9 +27,11 @@ CONFIG += c++11
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-        teamdialog.cpp
+        teamdialog.cpp \
+        lex.yy.c
 
 HEADERS += \
+        common.h \
         mainwindow.h \
         teamdialog.h
 

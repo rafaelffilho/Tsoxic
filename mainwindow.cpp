@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "common.h"
 
 #include <QString>
 #include <QFileDialog>
@@ -10,6 +11,12 @@
 #include <QIODevice>
 #include <QTextStream>
 #include <QShortcut>
+
+extern FILE *yyin;
+int yyline;
+extern char *yytext;
+extern int line_num;
+extern "C" int yylex();
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -59,8 +66,12 @@ void MainWindow::on_bt_save_clicked()
     if (!file)
         return;
 
+    file->resize(0);
+
     QTextStream out(file);
+
     out << ui->te_code_area->toPlainText();
+
 }
 
 void MainWindow::on_bt_copy_clicked()
@@ -82,4 +93,49 @@ void MainWindow::on_bt_team_clicked()
 {
     teamDialog = new TeamDialog();
     teamDialog->show();
+}
+
+void MainWindow::on_bt_compile_clicked()
+{
+    if (!file){
+        ui->tb_status->setText("None file open");
+        return;
+    }
+
+    int i;
+
+    ui->tb_compilation_log->clear();
+
+    yyin = fopen(file->fileName().toStdString().c_str(), "r");
+
+    if (!yyin) {
+        ui->tb_status->setText("Failed to load file");
+        return;
+    }
+
+    while((i = yylex()) != 0) {
+        std::string f = "Found ";
+
+        switch (i) {
+            case ID_INT: {
+                f.append("id_int ");
+                break;
+            }
+            case C_STR: {
+                f.append("c_str ");
+                break;
+            }
+        }
+
+        f.append("at line: " + std::to_string(yyline));
+        f+=" (";
+        f.append(yytext);
+        f+=")";
+
+        ui->tb_compilation_log->append(QString::fromStdString(f));
+    }
+
+    line_num = 1;
+
+    fclose(yyin);
 }
