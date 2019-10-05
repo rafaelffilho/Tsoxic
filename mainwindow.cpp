@@ -116,13 +116,67 @@ void MainWindow::on_bt_compile_clicked()
     while((i = yylex()) != 0) {
         std::string f = "Found ";
 
+        bool error = false;
+
         switch (i) {
+            case SYMBOL: {
+                f.append("SYMBOL ");
+                break;
+            }
+            case KEYWORD: {
+                f.append("KEYWORD ");
+                break;
+            }
             case ID_INT: {
-                f.append("id_int ");
+                f.append("ID_INT ");
+                break;
+            }
+            case ID_FLOAT: {
+                f.append("ID_FLOAT ");
+                break;
+            }
+            case ID_STR: {
+                f.append("ID_STR ");
+                break;
+            }
+            case ID_BOOL: {
+                f.append("ID_BOOL ");
+                break;
+            }
+            case ID_COMP: {
+                f.append("ID_COMP ");
+                break;
+            }
+            case C_INT: {
+                f.append("C_INT ");
+                break;
+            }
+            case C_FLOAT: {
+                f.append("C_FLOAT ");
                 break;
             }
             case C_STR: {
-                f.append("c_str ");
+                f.append("C_STR ");
+                break;
+            }
+            case ERR_ID: {
+                f.append("ERR_ID ");
+                error = true;
+                break;
+            }
+            case ERR_STR: {
+                f.append("ERR_STR ");
+                error = true;
+                break;
+            }
+            case ERR_BLK: {
+                f.append("ERR_BLK ");
+                error = true;
+                break;
+            }
+            case ERR_UNK: {
+                f.append("ERR_UNK ");
+                error = true;
                 break;
             }
         }
@@ -133,6 +187,8 @@ void MainWindow::on_bt_compile_clicked()
         f+=")";
 
         ui->tb_compilation_log->append(QString::fromStdString(f));
+
+        if (error) break;
     }
 
     line_num = 1;
