@@ -15,7 +15,8 @@ enum foo {
 	ERR_ID,
 	ERR_STR,
 	ERR_BLK,
-	ERR_UNK
+	ERR_UNK,
+	END
 };
 
 #endif
