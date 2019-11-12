@@ -1,7 +1,14 @@
 #ifndef COMMON_H
 #define COMMON_H
 
-enum foo {
+char *s;
+
+int yyerror(char *s);
+int yywrap() {
+	return 1;
+}
+
+/*enum foo {
 	SYMBOL = 1,
 	KEYWORD = 2,
 	ID_INT = 3,
@@ -17,6 +24,6 @@ enum foo {
 	ERR_BLK,
 	ERR_UNK,
 	END
-};
+};*/
 
 #endif

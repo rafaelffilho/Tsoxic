@@ -28,12 +28,14 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
         teamdialog.cpp \
-        lex.yy.c
+        lex.yy.c \
+	sem.tab.c
 
 HEADERS += \
         common.h \
         mainwindow.h \
-        teamdialog.h
+        teamdialog.h \
+	sem.tab.h
 
 FORMS += \
         mainwindow.ui \

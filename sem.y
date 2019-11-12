@@ -1,5 +1,8 @@
 %{
 	#include <stdio.h>
+	#include <string.h>
+	#include "common.h"
+	#define YYERROR_VERBOSE 1
 %}
 
 %token KEYWORD ID_INT ID_FLOAT ID_STRING ID_BOOL ID_COMP C_INT C_FLOAT C_STRING END SYMBOL ERR_ID ERR_STR ERR_BLK ERR_UNK MAIN INPUT OPEN_PARANTHESES CLOSE_PARANTHESES OPEN_BRACKETS CLOSE_BRACKETS OPEN_BRACES CLOSE_BRACES SEMI_COLON T_FALSE IF ISFALSEDO ISTRUEDO OUTPUT T_TRUE TYPES WHILE DOT COMMA COLON PLUS MINUS ASTERISK SLASH EQUALS DOUBLE_EQUALS NOT_EQUAL LESS_THAN LESS_EQUAL GREATER_THAN GREATER_EQUAL NOT AND OR
@@ -81,18 +84,9 @@ term_: %empty | ASTERISK factor term_ | SLASH factor term_ ;
 factor: use_var | C_INT | C_FLOAT | C_STRING | OPEN_PARANTHESES expr CLOSE_PARANTHESES | PLUS factor | MINUS factor ;
 
 %%
-main()
-{
- return(yyparse());
-}
 
-yyerror(s)
-char *s;
-{
-  fprintf(stderr, "%s\n",s);
-}
-
-yywrap()
-{
-  return(1);
+int yyerror(char *_s) {
+	fprintf(stderr, "deu erro: %s\n", _s);
+	s = malloc(sizeof(char) * strlen(_s) + 2);
+	strcpy(s, _s);
 }

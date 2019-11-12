@@ -3,6 +3,8 @@
 	#include "sem.tab.h"
 	int line_num = 1;
 	int yyline;
+	int yywrap();
+	int yyerror(char *s);
 %}
 
 upper  [A-Z]
